@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#176b3a">
+  <meta name="description" content="Plan goals, grow JPC, and manage customer contacts.">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <title>JPC Business Planner</title>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><div class="logo">JPC</div><div><h1>Business Planner</h1><p>J’s Property Care</p></div></div>
+  <button id="themeBtn" class="secondary" aria-label="Toggle dark mode">☾ Theme</button>
+</header>
+<nav class="tabs" aria-label="Main navigation">
+  <button class="tab active" data-page="dashboard">Dashboard</button>
+  <button class="tab" data-page="plans">Plans & Goals</button>
+  <button class="tab" data-page="customers">Customers</button>
+  <button class="tab" data-page="campaigns">Campaigns</button>
+  <button class="tab" data-page="settings">Settings</button>
+</nav>
+<main>
+  <section id="dashboard" class="page active">
+    <div class="welcome"><div><p class="eyebrow">BUILD THE BUSINESS</p><h2>Your next move starts here.</h2><p>Make a plan, track the work, and keep customers in touch.</p></div><button class="primary" data-goto="plans">＋ Add a goal</button></div>
+    <div class="stats">
+      <article class="stat"><span>Customers</span><strong id="statCustomers">0</strong><small>Saved in this browser</small></article>
+      <article class="stat"><span>Active goals</span><strong id="statGoals">0</strong><small>Not completed yet</small></article>
+      <article class="stat"><span>Goals completed</span><strong id="statDone">0</strong><small>Keep building momentum</small></article>
+      <article class="stat"><span>Target revenue</span><strong id="statRevenue">$0</strong><small>From your active goals</small></article>
+    </div>
+    <div class="grid two">
+      <article class="panel"><div class="panelhead"><h3>Priority goals</h3><button class="textbtn" data-goto="plans">View all →</button></div><div id="priorityGoals" class="empty">Add a goal to see it here.</div></article>
+      <article class="panel"><div class="panelhead"><h3>Business roadmap</h3></div><div class="roadmap">
+        <div><span class="dot"></span><section><b>Next 30 days</b><p>Set prices, contact past leads, and organize your customer list.</p></section></div>
+        <div><span class="dot"></span><section><b>Next 3 months</b><p>Build repeat customers, track job profit, and plan seasonal services.</p></section></div>
+        <div><span class="dot"></span><section><b>Next 12 months</b><p>Review revenue, equipment needs, and next season’s customer targets.</p></section></div>
+        <div><span class="dot"></span><section><b>Next 3–5 years</b><p>Build dependable recurring work and decide when hiring or expansion makes sense.</p></section></div>
+      </div></article>
+    </div>
+    <article class="panel"><div class="panelhead"><h3>Quick start checklist</h3><span class="muted">Your progress is saved on this device</span></div><div class="checklist">
+      <label><input type="checkbox" data-check="prices"> Write down prices for each service</label>
+      <label><input type="checkbox" data-check="customers"> Add your current customers</label>
+      <label><input type="checkbox" data-check="goal"> Set a 30-day goal</label>
+      <label><input type="checkbox" data-check="season"> Plan the next season’s services</label>
+    </div></article>
+  </section>
+
+  <section id="plans" class="page">
+    <div class="pagehead"><div><p class="eyebrow">DIRECTION & EXECUTION</p><h2>Plans & Goals</h2><p>Make goals specific, measurable, and realistic. Break each one into a next action.</p></div></div>
+    <div class="grid two">
+      <article class="panel"><h3>Create a goal</h3><form id="goalForm" class="form">
+        <label>Goal title<input name="title" required maxlength="100" placeholder="e.g. Get 10 recurring mowing customers"></label>
+        <div class="grid two compact"><label>Time horizon<select name="horizon"><option>30 days</option><option>3 months</option><option>6 months</option><option>1 year</option><option>3 years</option><option>5 years</option></select></label><label>Target date<input name="due" type="date"></label></div>
+        <label>Category<select name="category"><option>Customers</option><option>Revenue</option><option>Equipment</option><option>Marketing</option><option>Operations</option><option>Personal development</option></select></label>
+        <label>Next action<textarea name="action" rows="2" placeholder="What is the first step?"></textarea></label>
+        <div class="grid two compact"><label>Progress (%)<input name="progress" type="number" min="0" max="100" value="0"></label><label>Target revenue ($, optional)<input name="revenue" type="number" min="0" step="1" placeholder="0"></label></div>
+        <button class="primary" type="submit">Save goal</button>
+      </form></article>
+      <article class="panel"><h3>Goal-setting tip</h3><div class="tip"><b>Weak goal:</b><p>Get more customers.</p><b>Stronger goal:</b><p>By May 1, contact 40 nearby homes, follow up with interested leads, and aim to win 8 recurring customers.</p><b>Review every week</b><p>Update progress, write down what worked, and choose the next action. Use goals as targets, not guarantees.</p></div></article>
+    </div>
+    <div class="panel"><div class="panelhead"><h3>Your goals</h3><select id="goalFilter" aria-label="Filter goals"><option value="all">All goals</option><option value="active">Active</option><option value="done">Completed</option></select></div><div id="goalsList" class="goal-list empty">No goals yet. Create your first one above.</div></div>
+  </section>
+
+  <section id="customers" class="page">
+    <div class="pagehead"><div><p class="eyebrow">RELATIONSHIPS THAT GROW</p><h2>Customer contacts</h2><p>Save customers, keep notes, and open your phone’s email, calling, or messaging app.</p></div></div>
+    <div class="grid two">
+      <article class="panel"><h3>Add a customer</h3><form id="customerForm" class="form">
+        <label>Customer name<input name="name" required maxlength="100" placeholder="Full name"></label>
+        <div class="grid two compact"><label>Phone<input name="phone" type="tel" placeholder="616-555-0100"></label><label>Email<input name="email" type="email" placeholder="name@example.com"></label></div>
+        <label>Service address<input name="address" placeholder="Street, city"></label>
+        <label>Service / notes<textarea name="notes" rows="2" placeholder="Mowing every week, prefers text…"></textarea></label>
+        <button class="primary" type="submit">Save customer</button>
+      </form></article>
+      <article class="panel"><h3>Customer list</h3><input id="customerSearch" class="search" placeholder="Search name, phone, email…" aria-label="Search customers"><div id="customerList" class="customer-list empty">No customers saved yet.</div></article>
+    </div>
+    <p class="notice">Privacy note: this starter version stores data in this browser on this device. It does not sync between devices or securely share records with a team. Export backups regularly and do not store sensitive information here.</p>
+  </section>
+
+  <section id="campaigns" class="page">
+    <div class="pagehead"><div><p class="eyebrow">STAY IN TOUCH</p><h2>Customer campaigns</h2><p>Prepare seasonal announcements and follow-ups. Choose who should receive each message.</p></div></div>
+    <div class="grid two">
+      <article class="panel"><h3>Compose a campaign</h3><form id="campaignForm" class="form">
+        <label>Campaign name<input name="name" required placeholder="Fall cleanup reminder"></label>
+        <label>Channel<select name="channel" id="campaignChannel"><option value="email">Email</option><option value="sms">Text message</option></select></label>
+        <label>Recipients<select name="recipients"><option value="all">All customers with this contact method</option><option value="missing">Customers missing this contact method (review list)</option></select></label>
+        <label>Subject (email only)<input name="subject" id="campaignSubject" placeholder="Get on the fall cleanup schedule"></label>
+        <label>Message<textarea name="message" rows="5" required placeholder="Hi! JPC is booking fall cleanups. Reply if you would like a quote…"></textarea></label>
+        <button class="primary" type="submit">Prepare campaign</button>
+      </form><p class="notice">Email campaigns open a pre-addressed draft in your email app where supported. Text campaigns open a message draft with recipients separated; some phones/carriers won't support group drafts. Nothing is sent automatically by this demo.</p></article>
+      <article class="panel"><h3>Campaign preview</h3><div id="campaignPreview" class="preview empty">Your campaign preview will appear here.</div><div class="campaign-actions"><button id="openCampaign" class="primary" disabled>Open in app</button><button id="copyCampaign" class="secondary" disabled>Copy message</button></div><p class="muted small">For reliable bulk sending, connect a compliant email marketing service or SMS provider in a future version. Get permission first, identify JPC clearly, and include an easy opt-out. Avoid unsolicited bulk texts.</p></article>
+    </div>
+  </section>
+
+  <section id="settings" class="page">
+    <div class="pagehead"><div><p class="eyebrow">YOUR DATA</p><h2>Settings & backups</h2><p>Export your data so you can keep a backup before moving to another device.</p></div></div>
+    <div class="grid two">
+      <article class="panel"><h3>Business profile</h3><form id="profileForm" class="form"><label>Business name<input name="businessName" value="J’s Property Care"></label><label>Short name<input name="shortName" value="JPC"></label><label>Business email<input name="email" type="email" placeholder="yourbusiness@example.com"></label><label>Business phone<input name="phone" type="tel" placeholder="Your business number"></label><button class="primary" type="submit">Save profile</button></form></article>
+      <article class="panel"><h3>Backup & restore</h3><p>Export goals, customers, checklist, and profile as a JSON backup file.</p><div class="stack"><button id="exportBtn" class="primary">Export backup</button><label class="upload">Import backup file<input id="importFile" type="file" accept="application/json"></label><button id="clearBtn" class="danger">Clear all local data</button></div><p class="muted small">Import replaces the data currently saved in this browser. Clear data cannot be undone unless you have a backup.</p></article>
+    </div>
+    <article class="panel"><h3>Planned next versions</h3><ul class="feature-list"><li>Secure account sign-in and cloud sync</li><li>Real bulk email provider connection with unsubscribe handling</li><li>SMS provider integration, consent records, and opt-out handling</li><li>Revenue, expenses, and profit reporting</li><li>Calendar reminders and recurring customer follow-ups</li></ul></article>
+  </section>
+</main>
+<footer><span>JPC Business Planner</span><span>Starter version · Data stays in this browser</span></footer>
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="app.js"></script>
+</body>
+</html>
