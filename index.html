@@ -85,14 +85,22 @@
       <article class="panel"><h3>Compose a campaign</h3><form id="campaignForm" class="form">
         <label>Campaign name<input name="name" required placeholder="Fall cleanup reminder"></label>
         <label>Channel<select name="channel" id="campaignChannel"><option value="email">Email</option><option value="sms">Text message</option></select></label>
-        <label>Recipients<select name="recipients"><option value="all">All customers with this contact method</option><option value="missing">Customers missing this contact method (review list)</option></select></label>
-        <label>Subject (email only)<input name="subject" id="campaignSubject" placeholder="Get on the fall cleanup schedule"></label>
+        <label>Customers <button type="button" id="chooseRecipients" class="secondary picker-trigger">Choose customers</button><span id="selectedCustomerSummary" class="small">No customers selected yet.</span><input type="hidden" name="recipientIds" id="recipientIds"></label>
+        <label id="subjectLabel">Email subject <input name="subject" id="campaignSubject" placeholder="Fall cleanup scheduling"><span class="small">The subject is the title customers see at the top of an email. It is not needed for texts.</span></label>
         <label>Message<textarea name="message" rows="5" required placeholder="Hi! JPC is booking fall cleanups. Reply if you would like a quote…"></textarea></label>
         <button class="primary" type="submit">Prepare campaign</button>
-      </form><p class="notice">Email campaigns open a pre-addressed draft in your email app where supported. Text campaigns open a message draft with recipients separated; some phones/carriers won't support group drafts. Nothing is sent automatically by this demo.</p></article>
+      </form><p class="notice">This version prepares a draft for you to review. It does not automatically send individual messages. Email drafts use BCC to keep customer addresses private; group-text support depends on your phone. Automatic separate sending needs an email/SMS service.</p></article>
       <article class="panel"><h3>Campaign preview</h3><div id="campaignPreview" class="preview empty">Your campaign preview will appear here.</div><div class="campaign-actions"><button id="openCampaign" class="primary" disabled>Open in app</button><button id="copyCampaign" class="secondary" disabled>Copy message</button></div><p class="muted small">For reliable bulk sending, connect a compliant email marketing service or SMS provider in a future version. Get permission first, identify JPC clearly, and include an easy opt-out. Avoid unsolicited bulk texts.</p></article>
     </div>
   </section>
+
+  <div id="recipientModal" class="modal-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="recipientModalTitle">
+    <div class="recipient-modal panel"><div class="modal-heading"><div><h3 id="recipientModalTitle">Choose campaign customers</h3><p class="small">Select one or more customers. Only customers with the chosen contact method can receive this campaign.</p></div><button type="button" id="closeRecipients" class="secondary">Close</button></div>
+      <input id="recipientSearch" class="search" placeholder="Search customers by name, phone, or email" aria-label="Search campaign customers">
+      <div class="picker-tools"><span id="recipientCount" class="small">0 selected</span><button type="button" id="selectVisible" class="textbtn">Select visible</button><button type="button" id="clearRecipients" class="textbtn">Clear selection</button></div>
+      <div id="recipientOptions" class="recipient-options"></div><div class="modal-footer"><button type="button" id="doneRecipients" class="primary">Done</button></div>
+    </div>
+  </div>
 
   <section id="settings" class="page">
     <div class="pagehead"><div><p class="eyebrow">YOUR DATA</p><h2>Settings & backups</h2><p>Export your data so you can keep a backup before moving to another device.</p></div></div>
