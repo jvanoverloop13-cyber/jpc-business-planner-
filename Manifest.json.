@@ -1,7 +1,7 @@
 
 {
   "name": "JPC Business Planner",
-  "id": "/jpc-business-planner-app/",
+  "id": "/jpc-business-planner-/",
   "short_name": "JPC Planner",
   "description": "Plan goals, track progress, and manage business customers.",
   "start_url": "./",
