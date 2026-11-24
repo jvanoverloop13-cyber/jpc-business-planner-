@@ -61,3 +61,64 @@ function renderDashboard(){document.querySelector("#statCustomers").textContent=
 function renderAll(){document.body.classList.toggle("dark",data.theme==="dark");document.querySelector("#profileForm").elements.businessName.value=data.profile.businessName||"J’s Property Care";document.querySelector("#profileForm").elements.shortName.value=data.profile.shortName||"JPC";document.querySelector("#profileForm").elements.email.value=data.profile.email||"";document.querySelector("#profileForm").elements.phone.value=data.profile.phone||"";document.querySelectorAll("[data-check]").forEach(el=>el.checked=!!data.checks[el.dataset.check]);renderDashboard();renderGoals();renderCustomers();updateRecipientSummary();document.querySelector("#subjectLabel").style.display=campaignChannel()==="email"?"grid":"none"}
 renderAll();
 if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) { window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(()=>{})); }
+
+// JPC Coach: real AI is attempted first when an endpoint is configured and the device is online.
+// Keep this URL public (it is not a secret); the API key stays in the backend environment.
+const JPC_COACH_ENDPOINT = ""; // Parent/admin: add the deployed secure Worker URL here after setup.
+const coachTopics = {
+  prices:{title:"Set your service prices",intro:"Build prices that cover your time, equipment, travel, and business costs.",actions:["List every service and what it includes","Estimate time and costs for a typical job","Compare local market pricing","Set a minimum price and review it after a few jobs"]},
+  customers:{title:"Add your current customers",intro:"Organize customer details so follow-ups and repeat work are easier.",actions:["Gather names and best contact details","Record each customer's services and schedule","Ask customers what work they may need next","Set a reminder to follow up"]},
+  goal:{title:"Set a 30-day goal",intro:"Turn a broad idea into a clear target and a few manageable actions.",actions:["Choose one result to achieve in 30 days","Write down how you will measure it","Break it into three small weekly actions","Review progress once a week"]},
+  season:{title:"Plan the next season's services",intro:"Get ready for the season by checking demand, choosing services, and preparing your operation.",actions:["Check the market","Review what current customers are likely to need","Choose the services you will offer","Check equipment, supplies, and pricing","Prepare a simple promotion and contact past customers"]}
+};
+function coachAnswerBox(el, title, items, intro=""){
+  el.hidden=false;el.replaceChildren();
+  const h=document.createElement("h4");h.textContent=title;el.append(h);
+  if(intro){const p=document.createElement("p");p.textContent=intro;el.append(p)}
+  const ol=document.createElement("ol");items.forEach(item=>{const li=document.createElement("li");li.textContent=item;ol.append(li)});el.append(ol);
+}
+function offlineAdvice(topic, detail=""){
+  const base=topic?.actions||["Define the result you want","Find out what customers need","List the resources and costs involved","Choose the first small action","Set a date to review your progress"];
+  const items=detail?[
+    `Clarify the result: ${detail}`,
+    "Write down what you already know and what you still need to find out",
+    "Talk with a few potential or current customers to check demand",
+    "Estimate time, costs, and any equipment or supplies needed",
+    "Choose one small action you can complete this week",
+    "Review what worked and decide the next step"
+  ]:base;
+  return {title:topic?.title||"Your next steps",intro:topic?.intro||"Here is a practical starting plan from the built-in JPC Coach.",items};
+}
+async function getCoachAdvice(promptText, topic, answerEl){
+  const mode=document.querySelector("#coachMode");
+  const title=topic?.title||"Your JPC Coach plan";
+  answerEl.hidden=false;answerEl.textContent="Putting your plan together…";
+  if(JPC_COACH_ENDPOINT && navigator.onLine){
+    try{
+      const response=await fetch(JPC_COACH_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({question:promptText,businessName:data.profile.businessName||"J’s Property Care",businessType:"lawn care and property services"})});
+      if(!response.ok)throw new Error("Coach service unavailable");
+      const result=await response.json();
+      if(!result.answer||typeof result.answer!=="string")throw new Error("No AI answer returned");
+      mode.textContent="Real AI";mode.classList.add("is-ai");answerEl.textContent=result.answer;return;
+    }catch(err){/* Use the offline coach if the connection or AI service fails. */}
+  }
+  mode.textContent="Offline Coach";mode.classList.remove("is-ai");
+  const advice=offlineAdvice(topic,promptText);coachAnswerBox(answerEl,advice.title,advice.items,advice.intro);
+}
+function openQuickCoach(key){
+  const topic=coachTopics[key];if(!topic)return;
+  const panel=document.querySelector("#quickCoach");panel.hidden=false;
+  document.querySelector("#quickCoachTitle").textContent=topic.title;
+  document.querySelector("#quickCoachIntro").textContent=topic.intro;
+  const actions=document.querySelector("#quickCoachActions");actions.replaceChildren();
+  topic.actions.forEach(action=>{const row=document.createElement("div");row.className="coach-step";const label=document.createElement("label");const check=document.createElement("input");check.type="checkbox";label.append(check,document.createTextNode(action));const done=document.createElement("button");done.type="button";done.textContent="Done";done.addEventListener("click",()=>{check.checked=true;getCoachAdvice(`${topic.title}. I completed this step: ${action}. Tell me what to do next and give practical steps for a small lawn-care/property-services business.`,topic,document.querySelector("#quickCoachAnswer"))});row.append(label,done);actions.append(row)});
+  const answer=document.querySelector("#quickCoachAnswer");answer.hidden=true;answer.textContent="";
+}
+document.querySelectorAll("[data-check]").forEach(el=>el.addEventListener("change",()=>{if(el.checked)openQuickCoach(el.dataset.check);else if(!document.querySelector("[data-check]:checked")){document.querySelector("#quickCoach").hidden=true}}));
+document.querySelector("#askCoachBtn").addEventListener("click",()=>{
+  const field=document.querySelector("#coachQuestion"),question=field.value.trim();
+  if(!question){toast("Type a question for JPC Coach first.");field.focus();return}
+  document.querySelector("#quickCoach").hidden=false;
+  document.querySelector("#quickCoachTitle").textContent="Your business question";
+  getCoachAdvice(question,null,document.querySelector("#askCoachAnswer"));
+});

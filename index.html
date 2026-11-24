@@ -45,7 +45,20 @@
       <label><input type="checkbox" data-check="customers"> Add your current customers</label>
       <label><input type="checkbox" data-check="goal"> Set a 30-day goal</label>
       <label><input type="checkbox" data-check="season"> Plan the next season’s services</label>
-    </div></article>
+    </div>
+      <div id="quickCoach" class="coach-panel" hidden>
+        <div class="coach-heading"><div><p class="eyebrow">YOUR NEXT STEP</p><h3 id="quickCoachTitle">JPC Coach</h3></div><span id="coachMode" class="coach-mode">Offline Coach</span></div>
+        <p id="quickCoachIntro" class="muted">Choose a completed checklist item to get practical next steps.</p>
+        <div id="quickCoachActions" class="coach-actions"></div>
+        <div id="quickCoachAnswer" class="coach-answer" hidden></div>
+      </div>
+      <div class="coach-ask">
+        <label for="coachQuestion"><b>Ask JPC Coach</b><span class="muted small">Ask how to start something, solve a business problem, or plan your next move.</span></label>
+        <textarea id="coachQuestion" rows="3" maxlength="1200" placeholder="Example: I want to start offering spring cleanups. What should I do first?"></textarea>
+        <button id="askCoachBtn" class="primary">Ask JPC Coach</button>
+        <div id="askCoachAnswer" class="coach-answer" hidden></div>
+      </div>
+    </article>
   </section>
 
   <section id="plans" class="page">

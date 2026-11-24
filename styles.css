@@ -11,3 +11,11 @@ main{max-width:1180px;margin:28px auto;padding:0 20px}.page{display:none}.page.a
 
 /* Target date amount and unit controls */
 .horizon-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px}.form #customCategoryWrap[hidden]{display:none}
+
+/* JPC Coach */
+.coach-panel,.coach-ask{margin-top:18px;padding:18px;border:1px solid var(--border);border-radius:14px;background:var(--panel, #f8faf8)}
+.coach-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.coach-heading h3{margin:0}.coach-heading .eyebrow{margin:0 0 4px}.coach-mode{font-size:.75rem;font-weight:700;padding:6px 10px;border-radius:999px;background:#e5f3e9;color:#176b36;white-space:nowrap}
+.coach-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.coach-actions button{border:1px solid var(--border);border-radius:10px;padding:9px 12px;background:var(--panel);color:inherit}
+.coach-answer{margin-top:14px;padding:14px;border-radius:10px;background:var(--panel);border:1px solid var(--border);line-height:1.55;white-space:pre-wrap}.coach-answer h4{margin:0 0 8px}.coach-answer ol,.coach-answer ul{padding-left:22px}.coach-ask{display:grid;gap:10px}.coach-ask label{display:grid;gap:4px}.coach-ask textarea{width:100%;resize:vertical;border:1px solid var(--border);border-radius:10px;padding:12px;background:var(--panel);color:inherit;font:inherit}.coach-ask .primary{justify-self:start}.coach-panel[hidden],.coach-answer[hidden]{display:none}
+.coach-actions{display:grid;gap:8px}.coach-step{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 10px;border:1px solid var(--border);border-radius:10px;background:var(--panel)}.coach-step label{display:flex;align-items:center;gap:9px;min-width:0}.coach-step button{border:0;border-radius:8px;padding:7px 12px;background:#167a3f;color:white;font-weight:700}
+.coach-mode.is-ai{background:#e4efff;color:#174e9b}
