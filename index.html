@@ -53,8 +53,9 @@
     <div class="grid two">
       <article class="panel"><h3>Create a goal</h3><form id="goalForm" class="form">
         <label>Goal title<input name="title" required maxlength="100" placeholder="e.g. Get 10 recurring mowing customers"></label>
-        <div class="grid two compact"><label>Time horizon<select name="horizon"><option>30 days</option><option>3 months</option><option>6 months</option><option>1 year</option><option>3 years</option><option>5 years</option></select></label><label>Target date<input name="due" type="date"></label></div>
-        <label>Category<select name="category"><option>Customers</option><option>Revenue</option><option>Equipment</option><option>Marketing</option><option>Operations</option><option>Personal development</option></select></label>
+        <label>Target date<div class="horizon-inputs"><input name="horizonNumber" type="number" min="1" step="1" required placeholder="Enter a number" aria-label="Target date number"><select name="horizonUnit" aria-label="Target date unit"><option value="days">Days</option><option value="weeks">Weeks</option><option value="months">Months</option><option value="years">Years</option></select></div></label>
+        <label>Category<select name="category" id="goalCategory"><option>Customers</option><option>Revenue</option><option>Equipment</option><option>Personal development</option><option value="Other">Other</option></select></label>
+        <div id="customCategoryWrap" hidden><label>Custom category<input name="customCategory" id="customCategory" maxlength="50" placeholder="Type your own category"></label></div>
         <label>Next action<textarea name="action" rows="2" placeholder="What is the first step?"></textarea></label>
         <div class="grid two compact"><label>Progress (%)<input name="progress" type="number" min="0" max="100" value="0"></label><label>Target revenue ($, optional)<input name="revenue" type="number" min="0" step="1" placeholder="0"></label></div>
         <button class="primary" type="submit">Save goal</button>
